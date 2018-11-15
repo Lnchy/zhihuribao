@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<style type="text/css">
+			img {
+				max-width: 100%;
+			}
+			#content{
+				padding: 5em 1em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		<a id="left-cloer" class="mui-icon mui-icon-arrowleft mui-icon-bars mui-pull-left"></a>
+		<h1 class="mui-title">XXX</h1>
+		</header>
+		<div id="content" class="mui-content">
+			
+		</div>
+		
+		
+		<script src="js/mui.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<script type="text/javascript">
+			$("#left-cloer").on('tap',function(){
+				mui.back();
+			});
+			
+			mui.plusReady(function(){
+				var wb = plus.webview.currentWebview();
+				var url = "https://news-at.zhihu.com/api/4/news/" + wb.newid;
+				//加载文章数据
+				$.ajax({
+					url:url,
+					type:"get",
+					dataType:"json",
+					success: function(newData) {
+						var body = newData.body;
+						body = body.replace('查看知乎讨论', '');
+						body = body.replace('<script type=\“text\/javascript\”>window.daily=true<\/script>', '');
+						body = body.substr(body.indexOf("<p>"));
+						$("#content").html(body);
+						$(".mui-title").text(newData.title);
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>
